@@ -1,0 +1,6 @@
+API_PORT=8081
+API_SECURE=true
+
+SSL_KEY=/etc/ssl/SSL.key
+SSL_CERT=/etc/ssl/SSL.crt
+
