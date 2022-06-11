@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('./prelaunch')
 const { TrestleAPI } = require('@whiskeedev/trestle')
 
 // Check if we should be running in secureMode or not
