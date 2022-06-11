@@ -20,4 +20,8 @@ if (secureMode && (process.env.SSL_KEY && process.env.SSL_CERT)) {
   throw new Error('SSL Creds missing')
 }
 
+// Incorporate the routes
+const { routes } = require('./routes')
+
+// Start the API
 api.init()
