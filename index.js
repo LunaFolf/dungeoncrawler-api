@@ -1,13 +1,14 @@
 require('./prelaunch')
 const { TrestleAPI } = require('@whiskeedev/trestle')
 
+const titleCard = '[index.js]'.magenta
+
 // Check if we should be running in secureMode or not
 const secureMode = String(process.env.API_SECURE).toLowerCase() === 'true'
 
 // Create a new TrestleAPI instance
 const api = new TrestleAPI({ port: process.env.API_PORT })
 api.secureMode = secureMode
-
 
 if (secureMode && (process.env.SSL_KEY && process.env.SSL_CERT)) {
   // If we are in secure mode, attempt to set the SSL key and cert
@@ -20,8 +21,13 @@ if (secureMode && (process.env.SSL_KEY && process.env.SSL_CERT)) {
   throw new Error('SSL Creds missing')
 }
 
-// Incorporate the routes
-const { routes } = require('./routes')
+require('./database').then(() => {
+  console.log(titleCard, 'Database successfully initialized'.green);
 
-// Start the API
-api.init()
+  // Incorporate the routes
+  const { routes } = require('./routes')
+  routes.forEach(route => api.addRoute(route))
+
+  // Start the API
+  api.init()
+})

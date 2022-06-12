@@ -22,21 +22,23 @@ async function createDatabase () {
 
   process.database = sequelizeConnection // Easy access to the database connection from anywhere in the application
 
-  // Setup models
-  const modelFiles = fs.readdirSync('./database/models').filter(file => file.endsWith('.js')).map(file => require(`./models/${file}`))
-  const models = {}
+  if (fs.existsSync('./database/models')) {
+    // Setup models
+    const modelFiles = fs.readdirSync('./database/models').filter(file => file.endsWith('.js')).map(file => require(`./models/${file}`))
+    const models = {}
 
-  modelFiles.forEach(file => {
-    const model = file.init(sequelizeConnection, { DataTypes, Model })
-    console.log(titleCard, 'Model', model.name.cyan, 'loaded')
+    modelFiles.forEach(file => {
+      const model = file.init(sequelizeConnection, { DataTypes, Model })
+      console.log(titleCard, 'Model', model.name.cyan, 'loaded')
 
-    models[model.name] = model
-  })
+      models[model.name] = model
+    })
 
-  // Setup associations
-  modelFiles.forEach(file => {
-    if (file.associate) file.associate(models)
-  })
+    // Setup associations
+    modelFiles.forEach(file => {
+      if (file.associate) file.associate(models)
+    })
+  }
 
   //Sync the database
   await sequelizeConnection.sync({ force: false, alter: true })
