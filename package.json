@@ -12,6 +12,7 @@
   "dependencies": {
     "@whiskeedev/trestle": "^1.1.6",
     "dotenv": "^16.0.1",
+    "luxon": "^2.4.0",
     "nodemon": "^2.0.16"
   }
 }
